@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ETS ซัพพอร์ต</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <header class="header">
+      <div>
+        <div class="title">ETS ซัพพอร์ต</div>
+        <div class="subtitle" id="stationName">กำลังโหลดข้อมูลสถานี...</div>
+      </div>
+      <button class="ghost-button" id="hideButton" type="button">ซ่อน</button>
+    </header>
+
+    <div class="status-bar">
+      <span class="status-dot" id="statusDot"></span>
+      <span id="statusText">ออฟไลน์</span>
+      <span class="operator" id="operatorName"></span>
+    </div>
+
+    <section class="panel" id="idlePanel">
+      <label class="field">
+        <span>กะ</span>
+        <input id="shiftName" type="text" />
+      </label>
+      <label class="field">
+        <span>หมวดปัญหา</span>
+        <select id="issueCategory">
+          <option value="เครื่องพิมพ์">เครื่องพิมพ์</option>
+          <option value="สแกนเนอร์/อ่านบัตร">สแกนเนอร์/อ่านบัตร</option>
+          <option value="โปรแกรมค้าง/หลุดบ่อย">โปรแกรมค้าง/หลุดบ่อย</option>
+          <option value="อื่นๆ">อื่นๆ</option>
+        </select>
+      </label>
+      <button class="primary-button" id="startButton" type="button">เริ่มแชทซัพพอร์ต</button>
+    </section>
+
+    <section class="panel hidden" id="chatPanel">
+      <div class="ticket-badge" id="ticketBadge">เคส: -</div>
+      <div class="history" id="chatHistory"></div>
+      <form class="composer" id="messageForm">
+        <input id="messageInput" type="text" placeholder="พิมพ์ข้อความ..." />
+        <button class="primary-button" id="sendButton" type="submit">ส่ง</button>
+      </form>
+      <button class="danger-button" id="closeButton" type="button">ปิดเคส</button>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

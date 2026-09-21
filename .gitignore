@@ -1,0 +1,37 @@
+# Node.js
+node_modules/
+dist/
+build/
+.env
+.env.local
+.npm
+npm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+build/
+dist/
+*.spec
+# Note: Keep config.sample.ini, ignore actual config.ini
+apps/client-desktop/config.ini
+
+# IDEs & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# AI & Trae Documents (as requested)
+.trae/
+docs/
+
+# Misc
+*.log
+tmp/
+temp/

@@ -66,3 +66,20 @@
 *   `ChatBubble` - กล่องข้อความซ้าย/ขวา รองรับการแสดงเวลา
 *   `QueueListItem` - แถบรายชื่อเคสฝั่ง Admin
 *   `StatusCard` - การ์ดแสดงข้อมูลที่ดึงมาจาก ETS
+
+---
+
+## 5. Current Implementation Targets
+
+ระบบถูกจัดโครงสร้างใหม่ให้เหลือเฉพาะ implementation ปัจจุบัน:
+
+* `apps/backend/` - Node.js, Express.js, Socket.io, and MSSQL
+* `apps/client-desktop/` - Python 3.8.10 with `pywebview`, local config identity, and tray support
+* `apps/admin-web/` - React/Tailwind admin dashboard
+
+### Project Rules
+* Client runtime must stay compatible with Windows 7 x86.
+* Client identity must come only from local config.
+* Chat UI in the client must be rendered with HTML/CSS/JS in WebView.
+* Real-time transport must reconnect cleanly and rejoin ticket rooms.
+* Admin name display is config-driven from the backend and does not introduce login/auth.
