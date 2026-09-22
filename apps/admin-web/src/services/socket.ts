@@ -50,9 +50,9 @@ export function onTicketClosed(handler: (ticket: Ticket) => void): () => void {
 
 export function onTicketMessage(handler: (message: ChatMessage) => void): () => void {
   const client = getSocket();
-  client.off('ticket:message');
-  client.on('ticket:message', handler);
-  return () => client.off('ticket:message', handler);
+  client.off('admin:ticket-message');
+  client.on('admin:ticket-message', handler);
+  return () => client.off('admin:ticket-message', handler);
 }
 
 export function joinTicket(ticketId: number): Promise<void> {

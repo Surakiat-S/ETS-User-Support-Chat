@@ -6,6 +6,8 @@ export interface Ticket {
   status: string;
   openedAt: string;
   closedAt?: string | null;
+  latestMessageText?: string;
+  latestMessageAt?: string | null;
 }
 
 export interface ChatMessage {
@@ -14,8 +16,4 @@ export interface ChatMessage {
   senderType: string;
   messageText: string;
   createdAt: string;
-}
-
-export interface AdminDisplayResponse {
-  displayName: string;
 }

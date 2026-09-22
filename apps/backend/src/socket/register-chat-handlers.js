@@ -40,6 +40,7 @@ function registerChatHandlers(io) {
           messageText: messageText
         });
 
+        io.emit("admin:ticket-message", savedMessage);
         io.to(String(savedMessage.ticketId)).emit("ticket:message", savedMessage);
 
         if (typeof callback === "function") {

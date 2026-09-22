@@ -24,17 +24,22 @@ def main():
     window = create_window(controller, config["start_hidden"])
 
     def show_window():
+        controller.set_window_visible(True)
+        controller.set_window_active(True)
         window.show()
         window.restore()
 
     def hide_window():
+        controller.set_window_visible(False)
+        controller.set_window_active(False)
         window.hide()
 
     def exit_app():
         controller.shutdown()
         window.destroy()
 
-    start_tray(show_window, hide_window, exit_app)
+    tray = start_tray(show_window, hide_window, exit_app)
+    controller.bind_tray(tray)
     webview.start(debug=False)
 
 

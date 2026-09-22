@@ -123,6 +123,16 @@
     window.pywebview.api.hide_window();
   }
 
+  function reportWindowActive(isActive) {
+    if (!window.pywebview || !window.pywebview.api || !window.pywebview.api.set_window_active) {
+      return;
+    }
+
+    window.pywebview.api.set_window_active(isActive).catch(function () {
+      return null;
+    });
+  }
+
   window.etsClient = {
     receive: function (event) {
       if (!event || !event.name) {
@@ -165,6 +175,13 @@
     byId("messageForm").addEventListener("submit", sendMessage);
     byId("closeButton").addEventListener("click", closeTicket);
     byId("hideButton").addEventListener("click", hideWindow);
+    window.addEventListener("focus", function () {
+      reportWindowActive(true);
+    });
+    window.addEventListener("blur", function () {
+      reportWindowActive(false);
+    });
+    reportWindowActive(document.hasFocus());
     loadInitialState();
   });
 }());

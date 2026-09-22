@@ -8,7 +8,9 @@ function mapTicket(record) {
     category: record.Category,
     status: record.Status,
     openedAt: record.OpenedAt,
-    closedAt: record.ClosedAt
+    closedAt: record.ClosedAt,
+    latestMessageText: record.LatestMessageText || "",
+    latestMessageAt: record.LatestMessageAt || null
   };
 }
 
@@ -22,7 +24,8 @@ async function createTicket(payload) {
 
   const result = await request.query(
     "INSERT INTO Tickets (LocationId, ShiftName, Category, Status, OpenedAt, ClosedAt) " +
-      "OUTPUT INSERTED.Id, INSERTED.LocationId, INSERTED.ShiftName, INSERTED.Category, INSERTED.Status, INSERTED.OpenedAt, INSERTED.ClosedAt " +
+      "OUTPUT INSERTED.Id, INSERTED.LocationId, INSERTED.ShiftName, INSERTED.Category, INSERTED.Status, INSERTED.OpenedAt, INSERTED.ClosedAt, " +
+      "CAST(NULL AS NVARCHAR(MAX)) AS LatestMessageText, CAST(NULL AS DATETIME2) AS LatestMessageAt " +
       "VALUES (@locationId, @shiftName, @category, 'Open', SYSUTCDATETIME(), NULL);"
   );
 
@@ -32,8 +35,15 @@ async function createTicket(payload) {
 async function getActiveTickets() {
   const pool = await sqlConfig.getPool();
   const result = await pool.request().query(
-    "SELECT Id, LocationId, ShiftName, Category, Status, OpenedAt, ClosedAt " +
-      "FROM Tickets WHERE Status = 'Open' ORDER BY OpenedAt DESC;"
+    "SELECT t.Id, t.LocationId, t.ShiftName, t.Category, t.Status, t.OpenedAt, t.ClosedAt, " +
+      "lastMessage.MessageText AS LatestMessageText, lastMessage.CreatedAt AS LatestMessageAt " +
+      "FROM Tickets t " +
+      "OUTER APPLY (" +
+      "SELECT TOP 1 MessageText, CreatedAt FROM ChatMessages cm " +
+      "WHERE cm.TicketId = t.Id ORDER BY cm.CreatedAt DESC" +
+      ") lastMessage " +
+      "WHERE t.Status = 'Open' " +
+      "ORDER BY COALESCE(lastMessage.CreatedAt, t.OpenedAt) DESC;"
   );
 
   return result.recordset.map(mapTicket);
@@ -48,7 +58,8 @@ async function closeTicket(ticketId) {
   const result = await request.query(
     "UPDATE Tickets " +
       "SET Status = 'Closed', ClosedAt = SYSUTCDATETIME() " +
-      "OUTPUT INSERTED.Id, INSERTED.LocationId, INSERTED.ShiftName, INSERTED.Category, INSERTED.Status, INSERTED.OpenedAt, INSERTED.ClosedAt " +
+      "OUTPUT INSERTED.Id, INSERTED.LocationId, INSERTED.ShiftName, INSERTED.Category, INSERTED.Status, INSERTED.OpenedAt, INSERTED.ClosedAt, " +
+      "CAST(NULL AS NVARCHAR(MAX)) AS LatestMessageText, CAST(NULL AS DATETIME2) AS LatestMessageAt " +
       "WHERE Id = @ticketId;"
   );
 

@@ -3,6 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const { Server } = require("socket.io");
 const env = require("./config/env");
+const adminLoginRouter = require("./routes/admin-login");
+const adminsRouter = require("./routes/admins");
 const createTicketsRouter = require("./routes/tickets");
 const metaRouter = require("./routes/meta");
 const registerChatHandlers = require("./socket/register-chat-handlers");
@@ -35,6 +37,8 @@ app.get("/health", async function healthHandler(req, res) {
   }
 });
 
+app.use("/api/admin", adminLoginRouter);
+app.use("/api/admins", adminsRouter);
 app.use("/api/tickets", createTicketsRouter(io));
 app.use("/api/meta", metaRouter);
 

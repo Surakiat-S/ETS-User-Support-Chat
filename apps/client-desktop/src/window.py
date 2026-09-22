@@ -35,7 +35,13 @@ class ApiBridge(object):
 
     def hide_window(self):
         if self._window:
+            self._controller.set_window_visible(False)
+            self._controller.set_window_active(False)
             self._window.hide()
+        return {"ok": True}
+
+    def set_window_active(self, is_active):
+        self._controller.set_window_active(is_active)
         return {"ok": True}
 
 
